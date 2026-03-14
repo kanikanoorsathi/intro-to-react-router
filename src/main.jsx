@@ -12,6 +12,9 @@ import Mobiles from './components/Mobiles/Mobiles.jsx';
 import Laptops from './components/Laptops/Laptops.jsx';
 import Users from './components/users/Users.jsx';
 import Users2 from './components/users2/Users2.jsx';
+import UserDetails from './components/UserDetails/UserDetails.jsx';
+import Posts from './components/Posts/Posts.jsx';
+import PostDetail from './components/PostDetail/PostDetail.jsx';
 
 const usersPromise = fetch('https://jsonplaceholder.typicode.com/users').then(res => res.json());
 
@@ -38,7 +41,23 @@ const router = createBrowserRouter([
         element: <Suspense fallback={<span>Loading....</span>}>
             <Users2 usersPromise={usersPromise}></Users2>
         </Suspense>
-      }
+      },
+      {
+        path: 'users/:userId',
+        loader: ({params}) => fetch(`https://jsonplaceholder.typicode.com/users/${params.userId}`),
+        Component: UserDetails
+      },
+      {
+        path: 'posts',
+        loader: () => fetch(`https://jsonplaceholder.typicode.com/posts`),
+        Component: Posts
+      },
+      {
+        path: 'posts/:postId',
+        loader : ({params}) => fetch(`https://jsonplaceholder.typicode.com/posts/${params.postId}`),
+        Component: PostDetail
+      },
+      
    
     ]
 
@@ -47,6 +66,10 @@ const router = createBrowserRouter([
     path: 'app',
     // element:<App></App>
     Component: App
+  },
+  {
+    path: '*',
+    element: <h3>Not Found: 404 Status</h3>
   }
 ])
 
